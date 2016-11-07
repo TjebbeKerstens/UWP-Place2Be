@@ -70,6 +70,7 @@ namespace Place2Be
             MapIcon mapIcon = new MapIcon();
             mapIcon.Image = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///Assets/MapPin.png"));
             mapIcon.Location = current;
+            mapIcon.NormalizedAnchorPoint = new Point(0.5, 0.5);
 
             // Wait for the animation to finish before adding the mp
             await Task.Delay(1000);
@@ -81,7 +82,7 @@ namespace Place2Be
             SpeechRecognizer recognizer = new SpeechRecognizer();
 
             SpeechRecognitionTopicConstraint topicConstraint
-                    = new SpeechRecognitionTopicConstraint(SpeechRecognitionScenario.Dictation, "Development");
+                    = new SpeechRecognitionTopicConstraint(SpeechRecognitionScenario.Dictation, "Location");
 
             recognizer.Constraints.Add(topicConstraint);
             await recognizer.CompileConstraintsAsync(); // Required
@@ -92,8 +93,17 @@ namespace Place2Be
                 var results = await recognizer.RecognizeWithUIAsync();
                 if (results.Confidence != SpeechRecognitionConfidence.Rejected)
                 {
-                    Debug.WriteLine(results.Text);
+                    String result = toLowerCase(results.Text);
+                    Debug.WriteLine(result);
                     // No need to call 'Voice.Say'. The control speaks itself.
+                    
+                    if (result.Contains(toLowerCase("zoom out")))
+                    {
+                        Map.TryZoomOutAsync();
+                    } else if (result.Contains(toLowerCase("zoom in")))
+                    {
+                        Map.TryZoomInAsync();
+                    }
                 }
                 else
                 {
@@ -105,6 +115,16 @@ namespace Place2Be
                 MessageDialog dialog = new MessageDialog("Please go to Settings > Speech and configure your microphone for Speech recognition", "Speech recoginition not set up");
                 dialog.ShowAsync();
             }
+        }
+
+        private string toLowerCase(string s)
+        {
+            string result = "";
+            foreach (char c in s)
+            {
+                result += char.ToLower(c);
+            }
+            return result;
         }
     }
 }

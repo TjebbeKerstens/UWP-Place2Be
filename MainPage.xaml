@@ -10,11 +10,14 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        
-        <Button Grid.Row="0" HorizontalAlignment="Stretch" Content="Button" Click="OpenUI_Click"/>
-        <Maps:MapControl Name="Map" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MapServiceToken="exkZVHToou3UZ9nW0Zor~Ct4-QORfTWR8UQsgKR-EIg~Aj7firtbtJ7sbRlueUvmEiOGu6357FQC5NfioceJKx7BIJP3NVMZJGf9aQVSOwGG" />
+        <Maps:MapControl Name="Map" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MapServiceToken="exkZVHToou3UZ9nW0Zor~Ct4-QORfTWR8UQsgKR-EIg~Aj7firtbtJ7sbRlueUvmEiOGu6357FQC5NfioceJKx7BIJP3NVMZJGf9aQVSOwGG" />
+
+        <Button Click="OpenUI_Click" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+            <Viewbox MaxHeight="100" MaxWidth="100">
+                <SymbolIcon Symbol="Microphone"/>
+            </Viewbox>
+        </Button>
     </Grid>
 </Page>
