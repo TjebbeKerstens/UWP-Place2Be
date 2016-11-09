@@ -11,6 +11,7 @@ using Windows.Foundation.Collections;
 using Windows.Media.SpeechRecognition;
 using Windows.Storage.BulkAccess;
 using Windows.Storage.Streams;
+using Windows.UI.Core;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -32,15 +33,56 @@ namespace Place2Be
     {
         Geolocator geolocator;
         Geoposition geoposition;
+
+        SpeechRecognizer recognizer;
         public MainPage()
         {
             this.InitializeComponent();
+
+            ListenForSpeechAsync();
 
             geolocator = new Geolocator();
             geolocator.DesiredAccuracyInMeters = 10;
             geolocator.ReportInterval = 0;
 
             setPositionAsync();
+        }
+
+        async void ListenForSpeechAsync()
+        {
+            Debug.WriteLine("Listening method activated");
+
+            this.recognizer = new SpeechRecognizer();
+
+            var commands = new Dictionary<string, string>()
+            {
+                ["Hey Cortana"] = "\"Hey\" command received"
+            };
+
+            this.recognizer.Constraints.Add(new SpeechRecognitionListConstraint(
+              commands.Keys));
+
+            await this.recognizer.CompileConstraintsAsync();
+
+            this.recognizer.ContinuousRecognitionSession.ResultGenerated +=
+              async (s, e) =>
+              {
+                  Debug.WriteLine("Heard: " + e.Result.Text);
+                  if ((e.Result != null) && (commands.ContainsKey(e.Result.Text)))
+                  {
+                      await this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                () =>
+                    {
+                        Debug.WriteLine("Speech recognition activated");
+                        OpenUI_Click(null, null);
+                    }
+              );
+                      this.recognizer.ContinuousRecognitionSession.Resume();
+                  }
+              };
+
+            await this.recognizer.ContinuousRecognitionSession.StartAsync(
+              SpeechContinuousRecognitionMode.PauseOnRecognition);
         }
 
         private async void setPositionAsync()
