@@ -35,6 +35,20 @@ namespace Place2Be.Model
             try
             {
                 Uri uri = new Uri($"https://maps.googleapis.com/maps/api/place/nearbysearch/");
+                HttpResponseMessage response = await client.GetAsync(uri).AsTask(cts.Token);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return string.Empty;
+                }
+
+                string jsonResponse = await response.Content.ReadAsStringAsync();
+                System.Diagnostics.Debug.WriteLine(jsonResponse);
+                return jsonResponse;
+            }
+
+            catch(Exception)
+            {
+                return string.Empty;
             }
         }
     }
