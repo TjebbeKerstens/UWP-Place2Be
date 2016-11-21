@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage.Streams;
 using Windows.Web.Http;
+using Windows.Devices.Geolocation;
 
 namespace Place2Be.Model
 {
@@ -14,6 +15,7 @@ namespace Place2Be.Model
         private static RequestManager _instance;
         private HttpClient client = new HttpClient();
 
+        string baseUrl = "https://maps.googleapis.com/maps/api/place/";
         string api_key = "AIzaSyB40JmMGhRhBwqzOK-EvTVQ020TvSLPL_I";
 
         private RequestManager() { }
@@ -28,13 +30,19 @@ namespace Place2Be.Model
             return _instance;
         }
 
-        public async Task<string> RetrieveNearbyPlace()
+      //  https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=51.4894830,5.1343090&radius=1000&sensor=true&types=restaurant&key=AIzaSyB40JmMGhRhBwqzOK-EvTVQ020TvSLPL_I
+        public async Task<string> RetrieveNearbyPlace(Geoposition gp, string type)
         {
+           
             var cts = new CancellationTokenSource();
             cts.CancelAfter(5000);
+            double latitude = gp.Coordinate.Latitude;
+            double longitude = gp.Coordinate.Longitude;
+            string nearbyUrl = baseUrl + "nearbysearch/json?location=" + latitude + "," + longitude + "&radius=1000&sensor=true&types=" + type + "&key=" + api_key;
+
             try
             {
-                Uri uri = new Uri($"https://maps.googleapis.com/maps/api/place/nearbysearch/");
+                Uri uri = new Uri(nearbyUrl);
                 HttpResponseMessage response = await client.GetAsync(uri).AsTask(cts.Token);
                 if (!response.IsSuccessStatusCode)
                 {

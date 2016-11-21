@@ -15,6 +15,7 @@ using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Controls.Maps;
+using Place2Be.Model;
 
 namespace Place2Be
 {
@@ -85,6 +86,7 @@ namespace Place2Be
                 commands = new ObservableCollection<string>();
                 commands.Add("zoom in");
                 commands.Add("zoom out");
+                commands.Add("nearby restaurants");
                 ContinuousRecognize();
             }
             else
@@ -287,6 +289,10 @@ namespace Place2Be
                         else if (text.Contains("zoom out"))
                         {
                             Map.TryZoomOutAsync();
+                        }
+                        else if (text.Contains("nearby restaurants"))
+                        {
+                            Debug.WriteLine(RequestManager.GetInstance().RetrieveNearbyPlace(geoposition, "restaurant"));
                         }
                     }
                 }
