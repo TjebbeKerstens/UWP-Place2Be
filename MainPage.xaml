@@ -11,24 +11,52 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid x:Name="RootGrid">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <maps:MapControl Name="Map" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MapServiceToken="exkZVHToou3UZ9nW0Zor~Ct4-QORfTWR8UQsgKR-EIg~Aj7firtbtJ7sbRlueUvmEiOGu6357FQC5NfioceJKx7BIJP3NVMZJGf9aQVSOwGG" />
+
+            <maps:MapControl Name="Map" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             MapServiceToken="exkZVHToou3UZ9nW0Zor~Ct4-QORfTWR8UQsgKR-EIg~Aj7firtbtJ7sbRlueUvmEiOGu6357FQC5NfioceJKx7BIJP3NVMZJGf9aQVSOwGG">
+
+
+                <maps:MapItemsControl x:Name="MapItems">
+                    <maps:MapItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <!--                            <Button x:Name="mapItemButton" Click="mapItemButton_Click" Background="Transparent">-->
+                            <Image Source="{Binding ImageSourceUri}"
+                                       maps:MapControl.NormalizedAnchorPoint="{Binding NormalizedAnchorPoint}"
+                                       maps:MapControl.Location="{Binding Location}" 
+                                       Height="40"
+                                       Tapped="mapItemClick"/>
+                            <!--                            </Button>-->
+                        </DataTemplate>
+                    </maps:MapItemsControl.ItemTemplate>
+                </maps:MapItemsControl>
+
+            </maps:MapControl>
 
             <StackPanel Margin="12,20,12,12" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <TextBlock Margin="0,14.5,0,0" Text="Received commands" TextWrapping="Wrap" Style="{StaticResource SubheaderTextBlockStyle}" />
-                <TextBox x:Name="dictationTextBox" Margin="0,14.5,0,0" IsReadOnly="True" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" Height="120" TextChanged="dictationTextBox_TextChanged"/>
-                <TextBlock x:Name="discardedTextBlock" Margin="0,10,0,0" TextWrapping="WrapWholeWords" Visibility="Collapsed" Foreground="Red" />
-                <TextBlock x:Name="hlOpenPrivacySettings" Visibility="Collapsed" TextWrapping="WrapWholeWords">The speech recognition privacy settings have not been accepted. <Hyperlink Click="openPrivacySettings_Click">Open Privacy Settings</Hyperlink> to review the privacy policy and enable personalization.</TextBlock>
+                <TextBlock Margin="0,14.5,0,0" Text="Received commands" TextWrapping="Wrap"
+                           Style="{StaticResource SubheaderTextBlockStyle}" />
+                <TextBox x:Name="dictationTextBox" Margin="0,14.5,0,0" IsReadOnly="True" TextWrapping="Wrap"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto" Height="120"
+                         TextChanged="dictationTextBox_TextChanged" />
+                <TextBlock x:Name="discardedTextBlock" Margin="0,10,0,0" TextWrapping="WrapWholeWords"
+                           Visibility="Collapsed" Foreground="Red" />
+                <Button Content="Temp test" Click="TempButtonClick" />
+                <TextBlock x:Name="hlOpenPrivacySettings" Visibility="Collapsed" TextWrapping="WrapWholeWords">
+                    The speech recognition privacy settings have not been accepted.
+                    <Hyperlink Click="openPrivacySettings_Click">Open Privacy Settings</Hyperlink> to review the privacy policy and enable personalization.
+                </TextBlock>
             </StackPanel>
 
             <!-- Status Block for providing messages to the user.  Use the
              NotifyUser() method to populate the message -->
-            <Border x:Name="ErrorBorder" Background="Red" Grid.Row="2"/>
-            <TextBlock x:Name="StatusBlock" Grid.Row="2" Margin="12, 10, 12, 10" Visibility="Collapsed"/>
+            <Border x:Name="ErrorBorder" Background="Red" Grid.Row="2" />
+            <TextBlock x:Name="StatusBlock" Grid.Row="2" Margin="12, 10, 12, 10" Visibility="Collapsed" />
         </Grid>
     </Grid>
 </Page>

@@ -4,6 +4,7 @@ using Windows.UI.Xaml.Navigation;
 using Windows.UI.Core;
 using Windows.Media.SpeechRecognition;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text;
@@ -13,9 +14,13 @@ using Windows.UI.Xaml.Documents;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
+using Windows.Services.Maps;
 using Windows.Storage.Streams;
+using Windows.UI;
 using Windows.UI.Xaml.Controls.Maps;
+using Windows.UI.Xaml.Input;
 using Place2Be.Model;
+using Newtonsoft.Json.Linq;
 
 namespace Place2Be
 {
@@ -36,12 +41,16 @@ namespace Place2Be
 
         private Geolocator geolocator;
         private Geoposition geoposition;
+        private RequestManager rm;
+        public MapControl MapC;
 
         public MainPage()
         {
+            MapC = Map;
             this.InitializeComponent();
             isListening = false;
             dictatedTextBuilder = new StringBuilder();
+            rm = RequestManager.GetInstance();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -146,7 +155,7 @@ namespace Place2Be
 
         private void NotifyUser(string s, object errorMessage)
         {
-            Debug.WriteLine(errorMessage + " - " + s);
+            print(errorMessage + " - " + s);
         }
         
         protected override async void OnNavigatedFrom(NavigationEventArgs e)
@@ -229,7 +238,7 @@ namespace Place2Be
                         }
                         else if (text.Contains("nearby restaurants"))
                         {
-                            Debug.WriteLine(RequestManager.GetInstance().RetrieveNearbyPlace(geoposition, "restaurant"));
+                            RetrieveNearbyPlace("restaurant");
                         }
                     }
                 }
@@ -340,10 +349,105 @@ namespace Place2Be
                 break;
             }
         }
+
+        
         
         private async void openPrivacySettings_Click(Hyperlink sender, HyperlinkClickEventArgs args)
         {
             await Windows.System.Launcher.LaunchUriAsync(new Uri("ms-settings:privacy-speechtyping"));
+        }
+
+        private async void RetrieveNearbyPlace(string type)
+        {
+            string json = await rm.RetrieveNearbyPlace(geoposition, type);
+
+            JObject joResponse = JObject.Parse(json);
+            JArray results = (JArray)joResponse.GetValue("results");
+            List<PointOfInterest> pointList = new List<PointOfInterest>();
+
+            for (int i = 0; i < results.Count; i++)
+            {
+                float lat = (float)results[i]["geometry"]["location"]["lat"];
+                float lng = (float)results[i]["geometry"]["location"]["lng"];
+                string name = (string) results[i]["name"];
+                print(lat + "+" + lng);
+                var pinUri = new Uri("ms-appx:///Assets/LocationPin.png");
+
+                PointOfInterest poi = new PointOfInterest()
+                {
+                    DisplayName = name,
+                    ImageSourceUri = pinUri,
+                    NormalizedAnchorPoint = new Point(0.5, 1),
+                    FullArray = (JObject) results[i],
+                    Location = new Geopoint(new BasicGeoposition()
+                    {
+                        Latitude = lat,
+                        Longitude = lng
+                    })
+                };
+
+                pointList.Add(poi);
+            }
+
+            MapItems.ItemsSource = pointList;
+
+        }
+
+        private void mapItemClick(object sender, RoutedEventArgs e)
+        {
+            var buttonSender = sender as Image;
+            PointOfInterest poi = buttonSender.DataContext as PointOfInterest;
+            rootPage.NotifyUser("PointOfInterest clicked = " + poi.DisplayName, NotifyType.StatusMessage);
+            BasicGeoposition current = new BasicGeoposition();
+            current.Latitude = geoposition.Coordinate.Latitude;
+            current.Longitude = geoposition.Coordinate.Longitude;
+            LocationDialog ld = new LocationDialog(poi, current, this);
+            ld.ShowAsync();
+
+        }
+
+        public static async void showRoute(BasicGeoposition start, BasicGeoposition end, MainPage mp)
+        {
+            MapRouteFinderResult routeResult = await MapRouteFinder.GetDrivingRouteAsync(
+                 new Geopoint(start),
+                 new Geopoint(end),
+                 MapRouteOptimization.Time,
+                 MapRouteRestrictions.None);
+
+            if (routeResult.Status == MapRouteFinderStatus.Success)
+            {
+                // Use the route to initialize a MapRouteView.
+                MapRouteView viewOfRoute = new MapRouteView(routeResult.Route);
+                viewOfRoute.RouteColor = Colors.Yellow;
+                viewOfRoute.OutlineColor = Colors.Black;
+
+                // Add the new MapRouteView to the Routes collection
+                // of the MapControl.
+//                mp.MapC.Routes.Add(viewOfRoute);
+                if (mp.Map.Routes.Count > 0)
+                {
+                    mp.Map.Routes.RemoveAt(0);
+                }
+                mp.Map.Routes.Add(viewOfRoute);
+
+                // Fit the MapControl to the route.
+                await mp.Map.TrySetViewBoundsAsync(
+                      routeResult.Route.BoundingBox,
+                      null,
+                      Windows.UI.Xaml.Controls.Maps.MapAnimationKind.None);
+            }
+        }
+
+        private void print(string s)
+        {
+            Debug.WriteLine("--DEBUG-- " + s);
+        }
+
+
+
+        private void TempButtonClick(object sender, RoutedEventArgs e)
+        {
+            RetrieveNearbyPlace("Restaurant");
         }
     }
 
