@@ -406,13 +406,23 @@ namespace Place2Be
 
         }
 
-        public static async void showRoute(BasicGeoposition start, BasicGeoposition end, MainPage mp)
+        public static async void showRoute(BasicGeoposition start, BasicGeoposition end, MainPage mp, bool driving)
         {
-            MapRouteFinderResult routeResult = await MapRouteFinder.GetDrivingRouteAsync(
-                 new Geopoint(start),
-                 new Geopoint(end),
-                 MapRouteOptimization.Time,
-                 MapRouteRestrictions.None);
+            MapRouteFinderResult routeResult;
+            if (driving)
+            {
+                routeResult = await MapRouteFinder.GetDrivingRouteAsync(
+                    new Geopoint(start),
+                    new Geopoint(end),
+                    MapRouteOptimization.TimeWithTraffic,
+                    MapRouteRestrictions.None);
+            }
+            else
+            {
+                routeResult = await MapRouteFinder.GetWalkingRouteAsync(
+                    new Geopoint(start),
+                    new Geopoint(end));
+            }
 
             if (routeResult.Status == MapRouteFinderStatus.Success)
             {
@@ -434,7 +444,7 @@ namespace Place2Be
                 await mp.Map.TrySetViewBoundsAsync(
                       routeResult.Route.BoundingBox,
                       null,
-                      Windows.UI.Xaml.Controls.Maps.MapAnimationKind.None);
+                      MapAnimationKind.Bow);
             }
         }
 

@@ -32,16 +32,26 @@ namespace Place2Be
             Title = poi.DisplayName;
         }
 
-        private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        {
+        }
+
+        private void DriveButtonClick(object sender, RoutedEventArgs e)
         {
             BasicGeoposition target = new BasicGeoposition();
             target.Latitude = poi.Location.Position.Latitude;
             target.Longitude = poi.Location.Position.Longitude;
-            MainPage.showRoute(current, target, mp);
+            MainPage.showRoute(current, target, mp, true);
+            Hide();
         }
 
-        private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        private void WalkButtonClick(object sender, RoutedEventArgs e)
         {
+            BasicGeoposition target = new BasicGeoposition();
+            target.Latitude = poi.Location.Position.Latitude;
+            target.Longitude = poi.Location.Position.Longitude;
+            MainPage.showRoute(current, target, mp, false);
+            Hide();
         }
     }
 }

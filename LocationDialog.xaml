@@ -7,11 +7,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Title="TITLE"
-    PrimaryButtonText="Navigate"
     SecondaryButtonText="Cancel"
-    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
     SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
 
-    <Grid>
-    </Grid>
+    <StackPanel Orientation="Vertical">
+        <Button Click="DriveButtonClick" Margin="0, 10, 0, 5" HorizontalAlignment="Stretch">Drive</Button>
+        <Button Click="WalkButtonClick" Margin="0, 5, 0, 10" HorizontalAlignment="Stretch">Walk</Button>
+    </StackPanel>
 </ContentDialog>
