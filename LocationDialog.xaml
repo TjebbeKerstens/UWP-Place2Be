@@ -7,8 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Title="TITLE"
-    SecondaryButtonText="Cancel"
-    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+    PrimaryButtonText="Cancel"
+    PrimaryButtonClick="ContentDialog_SecondaryButtonClick">
 
     <StackPanel Orientation="Vertical">
         <Button Click="DriveButtonClick" Margin="0, 10, 0, 5" HorizontalAlignment="Stretch">Drive</Button>
