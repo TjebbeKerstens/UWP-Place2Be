@@ -54,7 +54,12 @@
                 </TextBlock>
             </StackPanel>
 
-            <ListView ItemsSource="{Binding Path=SimpleLocation}" Background="Blue" Name="listView1" Margin="12,20,12,12" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="200">
+            <ListView ItemsSource="{Binding SimpleLocation}" Background="#80FFFFFF" Name="listView1" Margin="12,20,12,12" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="200">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -62,8 +67,14 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="{Binding SimpleLocationName}" Grid.Row="0"/>
-                            <TextBlock Text="{Binding SimpleLocationAddress}" Grid.Row="1"/>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Margin="0, 0, 10, 0" Text="{Binding Id}" Grid.Row="0" Grid.Column="0"></TextBlock>
+                            <TextBlock Text="{Binding Name}" Grid.Row="0" Grid.Column="1"/>
+                            <TextBlock Text="{Binding Address}" Grid.Row="1" Grid.Column="1"/>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
