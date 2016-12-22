@@ -7,6 +7,7 @@ namespace Place2Be
 {
     public class PointOfInterest
     {
+        public int Id { get; set; }
         public string DisplayName { get; set; }
         public Uri ImageSourceUri { get; set; }
         public Point NormalizedAnchorPoint { get; set; }

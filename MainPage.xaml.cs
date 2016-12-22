@@ -44,6 +44,8 @@ namespace Place2Be
         private RequestManager rm;
         public MapControl MapC;
 
+        private ObservableCollection<SimpleLocation> nearestLocations = new ObservableCollection<SimpleLocation>();
+
         public MainPage()
         {
             MapC = Map;
@@ -364,17 +366,21 @@ namespace Place2Be
             JObject joResponse = JObject.Parse(json);
             JArray results = (JArray)joResponse.GetValue("results");
             List<PointOfInterest> pointList = new List<PointOfInterest>();
+            print(results.ToString());
 
             for (int i = 0; i < results.Count; i++)
             {
+                int id = i + 1;
                 float lat = (float)results[i]["geometry"]["location"]["lat"];
                 float lng = (float)results[i]["geometry"]["location"]["lng"];
                 string name = (string) results[i]["name"];
+                string address = (string) results[i]["vicinity"];
                 print(lat + "+" + lng);
                 var pinUri = new Uri("ms-appx:///Assets/LocationPin.png");
 
                 PointOfInterest poi = new PointOfInterest()
                 {
+                    Id = id,
                     DisplayName = name,
                     ImageSourceUri = pinUri,
                     NormalizedAnchorPoint = new Point(0.5, 1),
@@ -387,10 +393,12 @@ namespace Place2Be
                 };
 
                 pointList.Add(poi);
+
+                nearestLocations.Add(new SimpleLocation(id, name, address));
             }
 
             MapItems.ItemsSource = pointList;
-
+            listView1.ItemsSource = nearestLocations;
         }
 
         private void mapItemClick(object sender, RoutedEventArgs e)

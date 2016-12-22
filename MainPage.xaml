@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
+    xmlns:model="using:Place2Be.Model"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -52,6 +53,21 @@
                     <Hyperlink Click="openPrivacySettings_Click">Open Privacy Settings</Hyperlink> to review the privacy policy and enable personalization.
                 </TextBlock>
             </StackPanel>
+
+            <ListView ItemsSource="{Binding Path=SimpleLocation}" Background="Blue" Name="listView1" Margin="12,20,12,12" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="200">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="{Binding SimpleLocationName}" Grid.Row="0"/>
+                            <TextBlock Text="{Binding SimpleLocationAddress}" Grid.Row="1"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
             <!-- Status Block for providing messages to the user.  Use the
              NotifyUser() method to populate the message -->
