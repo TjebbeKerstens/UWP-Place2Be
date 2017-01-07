@@ -7,11 +7,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using Windows.UI.Xaml.Media;
 using Windows.Globalization;
 using Windows.UI.Xaml.Documents;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Resources.Core;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Services.Maps;
@@ -43,6 +45,7 @@ namespace Place2Be
         private Geoposition geoposition;
         private RequestManager rm;
         public MapControl MapC;
+        private ResourceMap speechResourceMap;
 
         private ObservableCollection<SimpleLocation> nearestLocations = new ObservableCollection<SimpleLocation>();
 
@@ -72,10 +75,13 @@ namespace Place2Be
             if (permissionGained)
             {
                 await InitializeRecognizer(SpeechRecognizer.SystemSpeechLanguage);
+
+//                speechResourceMap = ResourceManager.Current.MainResourceMap.GetSubtree("LocalizationSpeechResources");
+
                 commands = new ObservableCollection<string>();
                 commands.Add("zoom in");
                 commands.Add("zoom out");
-                commands.Add("nearby restaurants");
+                commands.Add("nearest restaurants");
                 ContinuousRecognize();
             }
             else
@@ -135,19 +141,25 @@ namespace Place2Be
             this.speechRecognizer = new SpeechRecognizer(recognizerLanguage);
             
             speechRecognizer.StateChanged += SpeechRecognizer_StateChanged;
-            
-            var dictationConstraint = new SpeechRecognitionTopicConstraint(SpeechRecognitionScenario.Dictation, "Mapcontrol");
-            speechRecognizer.Constraints.Add(dictationConstraint);
+
+            Uri uri = new Uri("ms-appx:///Strings/srgs.grxml");
+
+            var storageFile =
+                await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(uri);
+            var grammarFileConstraint = new SpeechRecognitionGrammarFileConstraint(storageFile, "commands");
+            speechRecognizer.Constraints.Add(grammarFileConstraint);
+
             SpeechRecognitionCompilationResult result = await speechRecognizer.CompileConstraintsAsync();
+            
             if (result.Status != SpeechRecognitionResultStatus.Success)
             {
                 rootPage.NotifyUser("Grammar Compilation Failed: " + result.Status.ToString(), NotifyType.ErrorMessage);
             }
 
             // Set timeout timer to 1 day
-            TimeSpan timeSpan = new TimeSpan(1, 0, 0, 0);
-            speechRecognizer.ContinuousRecognitionSession.AutoStopSilenceTimeout.Add(timeSpan);
-            speechRecognizer.Timeouts.InitialSilenceTimeout = timeSpan;
+//            TimeSpan timeSpan = new TimeSpan(1, 0, 0, 0);
+//            speechRecognizer.ContinuousRecognitionSession.AutoStopSilenceTimeout.Add(timeSpan);
+//            speechRecognizer.Timeouts.InitialSilenceTimeout = timeSpan;
             
             speechRecognizer.ContinuousRecognitionSession.Completed += ContinuousRecognitionSession_Completed;
             speechRecognizer.ContinuousRecognitionSession.ResultGenerated += ContinuousRecognitionSession_ResultGenerated;
@@ -238,9 +250,9 @@ namespace Place2Be
                         {
                             Map.TryZoomOutAsync();
                         }
-                        else if (text.Contains("nearby restaurants"))
+                        else if (text.Contains("nearest restaurants"))
                         {
-                            RetrieveNearbyPlace("restaurant");
+                            RetrieveNearbyPlace("Restaurant");
                         }
                     }
                 }
@@ -375,7 +387,6 @@ namespace Place2Be
                 float lng = (float)results[i]["geometry"]["location"]["lng"];
                 string name = (string) results[i]["name"];
                 string address = (string) results[i]["vicinity"];
-                print(lat + "+" + lng);
                 var pinUri = new Uri("ms-appx:///Assets/LocationPin.png");
 
                 PointOfInterest poi = new PointOfInterest()

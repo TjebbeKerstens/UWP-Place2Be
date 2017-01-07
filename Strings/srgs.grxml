@@ -1,0 +1,45 @@
+﻿<grammar xml:lang="en-US" 
+         root="commands"
+         version="1.0" 
+         tag-format="semantics/1.0"
+         xmlns="http://www.w3.org/2001/06/grammar">
+
+    <!-- The following rules recognize variants of yes and no. -->
+      <rule id="commands">
+        <one-of>
+          <item>
+            <one-of>
+              <item>zoom in</item>
+              <item>zoom in please</item>
+              <item>please zoom in</item>
+              <item>could you zoom in</item>
+              <item>could you zoom in please</item>
+              <item>could you please zoom in</item>
+            </one-of>
+            <tag>out="zoom in";</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>zoom out</item>
+              <item>zoom out please</item>
+              <item>please zoom out</item>
+              <item>could you zoom out</item>
+              <item>could you zoom out please</item>
+              <item>could you please zoom out</item>
+            </one-of>
+            <tag>out="zoom out";</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>nearest restaurants</item>
+              <item>near restaurants</item>
+              <item>find the nearest restaurants</item>
+              <item>find near restourants</item>
+              <item>show nearest restaurants</item>
+              <item>show near restaurants</item>
+            </one-of>
+            <tag>out="nearest restaurants";</tag>
+          </item>
+        </one-of>
+      </rule>
+</grammar>
