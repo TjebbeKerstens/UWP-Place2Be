@@ -13,5 +13,6 @@ namespace Place2Be
         public Point NormalizedAnchorPoint { get; set; }
         public Geopoint Location { get; set; }
         public JObject FullArray { get; set; }
+        public string Address { get; set; }
     }
 }

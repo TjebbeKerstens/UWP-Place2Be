@@ -394,6 +394,7 @@ namespace Place2Be
                     Id = id,
                     DisplayName = name,
                     ImageSourceUri = pinUri,
+                    Address = address,
                     NormalizedAnchorPoint = new Point(0.5, 1),
                     FullArray = (JObject) results[i],
                     Location = new Geopoint(new BasicGeoposition()
@@ -409,7 +410,7 @@ namespace Place2Be
             }
 
             MapItems.ItemsSource = pointList;
-            listView1.ItemsSource = nearestLocations;
+            listView1.ItemsSource = pointList;
         }
 
         private void mapItemClick(object sender, RoutedEventArgs e)
@@ -477,6 +478,16 @@ namespace Place2Be
         private void TempButtonClick(object sender, RoutedEventArgs e)
         {
             RetrieveNearbyPlace("Restaurant");
+        }
+
+        private void ListView1_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            PointOfInterest poi = (PointOfInterest) e.ClickedItem;
+            BasicGeoposition current = new BasicGeoposition();
+            current.Latitude = geoposition.Coordinate.Latitude;
+            current.Longitude = geoposition.Coordinate.Longitude;
+            LocationDialog ld = new LocationDialog(poi, current, this);
+            ld.ShowAsync();
         }
     }
 

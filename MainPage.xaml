@@ -28,10 +28,10 @@
                         <DataTemplate>
                             <!--                            <Button x:Name="mapItemButton" Click="mapItemButton_Click" Background="Transparent">-->
                             <Image Source="{Binding ImageSourceUri}"
-                                       maps:MapControl.NormalizedAnchorPoint="{Binding NormalizedAnchorPoint}"
-                                       maps:MapControl.Location="{Binding Location}" 
-                                       Height="40"
-                                       Tapped="mapItemClick"/>
+                                   maps:MapControl.NormalizedAnchorPoint="{Binding NormalizedAnchorPoint}"
+                                   maps:MapControl.Location="{Binding Location}"
+                                   Height="40"
+                                   Tapped="mapItemClick" />
                             <!--                            </Button>-->
                         </DataTemplate>
                     </maps:MapItemsControl.ItemTemplate>
@@ -54,27 +54,36 @@
                 </TextBlock>
             </StackPanel>
 
-            <ListView ItemsSource="{Binding SimpleLocation}" Background="#80FFFFFF" Name="listView1" Margin="12,20,12,12" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="200">
+            <ListView ItemsSource="{Binding PointOfInterest}"
+                      Background="#80FFFFFF" 
+                      Name="listView1" 
+                      Margin="12,20,12,12" 
+                      Grid.Row="1"
+                      HorizontalAlignment="Right" 
+                      VerticalAlignment="Stretch" 
+                      Width="200"
+                      IsItemClickEnabled="True"
+                      ItemClick="ListView1_OnItemClick">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                     </Style>
                 </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Margin="0, 0, 10, 0" Text="{Binding Id}" Grid.Row="0" Grid.Column="0"></TextBlock>
-                            <TextBlock Text="{Binding Name}" Grid.Row="0" Grid.Column="1"/>
-                            <TextBlock Text="{Binding Address}" Grid.Row="1" Grid.Column="1"/>
+                            <TextBlock Margin="0, 0, 10, 0" Text="{Binding Id}" Grid.Row="0" Grid.Column="0" />
+                            <TextBlock Text="{Binding DisplayName}" Grid.Row="0" Grid.Column="1" />
+                            <TextBlock Text="{Binding Address}" Grid.Row="1" Grid.Column="1" />
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
