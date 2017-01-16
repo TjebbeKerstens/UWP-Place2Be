@@ -29,7 +29,7 @@ namespace Place2Be
     public sealed partial class MainPage : Page
     {
         private MainPage rootPage;
-       
+
         private CoreDispatcher dispatcher;
         private SpeechRecognizer speechRecognizer;
 
@@ -46,8 +46,6 @@ namespace Place2Be
         private RequestManager rm;
         public MapControl MapC;
         private ResourceMap speechResourceMap;
-
-        private ObservableCollection<SimpleLocation> nearestLocations = new ObservableCollection<SimpleLocation>();
 
         public MainPage()
         {
@@ -86,9 +84,9 @@ namespace Place2Be
             }
             else
             {
-                this.dictationTextBox.Text = "Permission to access capture resources was not given by the user, reset the application setting in Settings->Privacy->Microphone.";
+                this.dictationTextBox.Text =
+                    "Permission to access capture resources was not given by the user, reset the application setting in Settings->Privacy->Microphone.";
             }
-
         }
 
         private async void setPositionAsync()
@@ -123,7 +121,7 @@ namespace Place2Be
             await Task.Delay(1000);
             Map.MapElements.Add(mapIcon);
         }
-        
+
         private async Task InitializeRecognizer(Language recognizerLanguage)
         {
             if (speechRecognizer != null)
@@ -131,7 +129,8 @@ namespace Place2Be
                 // cleanup prior to re-initializing this scenario.
                 speechRecognizer.StateChanged -= SpeechRecognizer_StateChanged;
                 speechRecognizer.ContinuousRecognitionSession.Completed -= ContinuousRecognitionSession_Completed;
-                speechRecognizer.ContinuousRecognitionSession.ResultGenerated -= ContinuousRecognitionSession_ResultGenerated;
+                speechRecognizer.ContinuousRecognitionSession.ResultGenerated -=
+                    ContinuousRecognitionSession_ResultGenerated;
                 speechRecognizer.HypothesisGenerated -= SpeechRecognizer_HypothesisGenerated;
 
                 this.speechRecognizer.Dispose();
@@ -139,7 +138,7 @@ namespace Place2Be
             }
 
             this.speechRecognizer = new SpeechRecognizer(recognizerLanguage);
-            
+
             speechRecognizer.StateChanged += SpeechRecognizer_StateChanged;
 
             Uri uri = new Uri("ms-appx:///Strings/srgs.grxml");
@@ -150,7 +149,7 @@ namespace Place2Be
             speechRecognizer.Constraints.Add(grammarFileConstraint);
 
             SpeechRecognitionCompilationResult result = await speechRecognizer.CompileConstraintsAsync();
-            
+
             if (result.Status != SpeechRecognitionResultStatus.Success)
             {
                 rootPage.NotifyUser("Grammar Compilation Failed: " + result.Status.ToString(), NotifyType.ErrorMessage);
@@ -160,18 +159,18 @@ namespace Place2Be
 //            TimeSpan timeSpan = new TimeSpan(1, 0, 0, 0);
 //            speechRecognizer.ContinuousRecognitionSession.AutoStopSilenceTimeout.Add(timeSpan);
 //            speechRecognizer.Timeouts.InitialSilenceTimeout = timeSpan;
-            
-            speechRecognizer.ContinuousRecognitionSession.Completed += ContinuousRecognitionSession_Completed;
-            speechRecognizer.ContinuousRecognitionSession.ResultGenerated += ContinuousRecognitionSession_ResultGenerated;
-            speechRecognizer.HypothesisGenerated += SpeechRecognizer_HypothesisGenerated;
 
+            speechRecognizer.ContinuousRecognitionSession.Completed += ContinuousRecognitionSession_Completed;
+            speechRecognizer.ContinuousRecognitionSession.ResultGenerated +=
+                ContinuousRecognitionSession_ResultGenerated;
+            speechRecognizer.HypothesisGenerated += SpeechRecognizer_HypothesisGenerated;
         }
 
         private void NotifyUser(string s, object errorMessage)
         {
             print(errorMessage + " - " + s);
         }
-        
+
         protected override async void OnNavigatedFrom(NavigationEventArgs e)
         {
             if (this.speechRecognizer != null)
@@ -185,7 +184,8 @@ namespace Place2Be
                 dictationTextBox.Text = "";
 
                 speechRecognizer.ContinuousRecognitionSession.Completed -= ContinuousRecognitionSession_Completed;
-                speechRecognizer.ContinuousRecognitionSession.ResultGenerated -= ContinuousRecognitionSession_ResultGenerated;
+                speechRecognizer.ContinuousRecognitionSession.ResultGenerated -=
+                    ContinuousRecognitionSession_ResultGenerated;
                 speechRecognizer.HypothesisGenerated -= SpeechRecognizer_HypothesisGenerated;
                 speechRecognizer.StateChanged -= SpeechRecognizer_StateChanged;
 
@@ -194,7 +194,8 @@ namespace Place2Be
             }
         }
 
-        private async void ContinuousRecognitionSession_Completed(SpeechContinuousRecognitionSession sender, SpeechContinuousRecognitionCompletedEventArgs args)
+        private async void ContinuousRecognitionSession_Completed(SpeechContinuousRecognitionSession sender,
+            SpeechContinuousRecognitionCompletedEventArgs args)
         {
             if (args.Status != SpeechRecognitionResultStatus.Success)
             {
@@ -211,26 +212,26 @@ namespace Place2Be
                 {
                     await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                     {
-                        rootPage.NotifyUser("Continuous Recognition Completed: " + args.Status.ToString(), NotifyType.StatusMessage);
+                        rootPage.NotifyUser("Continuous Recognition Completed: " + args.Status.ToString(),
+                            NotifyType.StatusMessage);
                         isListening = false;
                     });
                 }
             }
         }
-        
-        private async void SpeechRecognizer_HypothesisGenerated(SpeechRecognizer sender, SpeechRecognitionHypothesisGeneratedEventArgs args)
+
+        private async void SpeechRecognizer_HypothesisGenerated(SpeechRecognizer sender,
+            SpeechRecognitionHypothesisGeneratedEventArgs args)
         {
             string hypothesis = args.Hypothesis.Text;
 
             // Update the textbox with the currently confirmed text, and the hypothesis combined.
             string textboxContent = dictatedTextBuilder.ToString() + " " + hypothesis + " ...";
-            await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                dictationTextBox.Text = textboxContent;
-            });
+            await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => { dictationTextBox.Text = textboxContent; });
         }
-        
-        private async void ContinuousRecognitionSession_ResultGenerated(SpeechContinuousRecognitionSession sender, SpeechContinuousRecognitionResultGeneratedEventArgs args)
+
+        private async void ContinuousRecognitionSession_ResultGenerated(SpeechContinuousRecognitionSession sender,
+            SpeechContinuousRecognitionResultGeneratedEventArgs args)
         {
             if (args.Result.Confidence == SpeechRecognitionConfidence.Medium ||
                 args.Result.Confidence == SpeechRecognitionConfidence.High)
@@ -273,7 +274,9 @@ namespace Place2Be
                     string discardedText = args.Result.Text;
                     if (!string.IsNullOrEmpty(discardedText))
                     {
-                        discardedText = discardedText.Length <= 25 ? discardedText : (discardedText.Substring(0, 25) + "...");
+                        discardedText = discardedText.Length <= 25
+                            ? discardedText
+                            : (discardedText.Substring(0, 25) + "...");
 
                         discardedTextBlock.Text = "Discarded due to low/rejected Confidence: " + discardedText;
                         discardedTextBlock.Visibility = Windows.UI.Xaml.Visibility.Visible;
@@ -281,14 +284,15 @@ namespace Place2Be
                 });
             }
         }
-        
-        private async void SpeechRecognizer_StateChanged(SpeechRecognizer sender, SpeechRecognizerStateChangedEventArgs args)
+
+        private async void SpeechRecognizer_StateChanged(SpeechRecognizer sender,
+            SpeechRecognizerStateChangedEventArgs args)
         {
-            await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
-                rootPage.NotifyUser(args.State.ToString(), NotifyType.StatusMessage);
-            });
+            await
+                dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                    () => { rootPage.NotifyUser(args.State.ToString(), NotifyType.StatusMessage); });
         }
-        
+
         public async void ContinuousRecognize()
         {
             if (isListening == false)
@@ -307,7 +311,7 @@ namespace Place2Be
                     }
                     catch (Exception ex)
                     {
-                        if ((uint)ex.HResult == HResultPrivacyStatementDeclined)
+                        if ((uint) ex.HResult == HResultPrivacyStatementDeclined)
                         {
                             // Show a UI link to the privacy settings.
                             hlOpenPrivacySettings.Visibility = Visibility.Visible;
@@ -319,7 +323,6 @@ namespace Place2Be
                         }
 
                         isListening = false;
-
                     }
                 }
             }
@@ -347,10 +350,10 @@ namespace Place2Be
             //                }
             //            }
         }
-        
+
         private void dictationTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var grid = (Grid)VisualTreeHelper.GetChild(dictationTextBox, 0);
+            var grid = (Grid) VisualTreeHelper.GetChild(dictationTextBox, 0);
             for (var i = 0; i <= VisualTreeHelper.GetChildrenCount(grid) - 1; i++)
             {
                 object obj = VisualTreeHelper.GetChild(grid, i);
@@ -359,13 +362,12 @@ namespace Place2Be
                     continue;
                 }
 
-                ((ScrollViewer)obj).ChangeView(0.0f, ((ScrollViewer)obj).ExtentHeight, 1.0f);
+                ((ScrollViewer) obj).ChangeView(0.0f, ((ScrollViewer) obj).ExtentHeight, 1.0f);
                 break;
             }
         }
 
-        
-        
+
         private async void openPrivacySettings_Click(Hyperlink sender, HyperlinkClickEventArgs args)
         {
             await Windows.System.Launcher.LaunchUriAsync(new Uri("ms-settings:privacy-speechtyping"));
@@ -376,15 +378,15 @@ namespace Place2Be
             string json = await rm.RetrieveNearbyPlace(geoposition, type);
 
             JObject joResponse = JObject.Parse(json);
-            JArray results = (JArray)joResponse.GetValue("results");
+            JArray results = (JArray) joResponse.GetValue("results");
             List<PointOfInterest> pointList = new List<PointOfInterest>();
             print(results.ToString());
 
             for (int i = 0; i < results.Count; i++)
             {
                 int id = i + 1;
-                float lat = (float)results[i]["geometry"]["location"]["lat"];
-                float lng = (float)results[i]["geometry"]["location"]["lng"];
+                float lat = (float) results[i]["geometry"]["location"]["lat"];
+                float lng = (float) results[i]["geometry"]["location"]["lng"];
                 string name = (string) results[i]["name"];
                 string address = (string) results[i]["vicinity"];
                 var pinUri = new Uri("ms-appx:///Assets/LocationPin.png");
@@ -405,8 +407,6 @@ namespace Place2Be
                 };
 
                 pointList.Add(poi);
-
-                nearestLocations.Add(new SimpleLocation(id, name, address));
             }
 
             MapItems.ItemsSource = pointList;
@@ -423,7 +423,6 @@ namespace Place2Be
             current.Longitude = geoposition.Coordinate.Longitude;
             LocationDialog ld = new LocationDialog(poi, current, this);
             ld.ShowAsync();
-
         }
 
         public static async void showRoute(BasicGeoposition start, BasicGeoposition end, MainPage mp, bool driving)
@@ -462,9 +461,9 @@ namespace Place2Be
 
                 // Fit the MapControl to the route.
                 await mp.Map.TrySetViewBoundsAsync(
-                      routeResult.Route.BoundingBox,
-                      null,
-                      MapAnimationKind.Bow);
+                    routeResult.Route.BoundingBox,
+                    null,
+                    MapAnimationKind.Bow);
             }
         }
 
@@ -472,7 +471,6 @@ namespace Place2Be
         {
             Debug.WriteLine("--DEBUG-- " + s);
         }
-
 
 
         private void TempButtonClick(object sender, RoutedEventArgs e)
