@@ -48,8 +48,14 @@ namespace Place2Be
         public MapControl MapC;
         private ResourceMap speechResourceMap;
 
+        private PointOfInterest currentSelectedPOI;
+        private BasicGeoposition currentPosition;
+        private ContentDialog currentDialog;
+
+        public TextBox destinationTB;
         public MainPage()
         {
+            destinationTB = destinationTextBox;
             MapC = Map;
             this.InitializeComponent();
             isListening = false;
@@ -75,32 +81,6 @@ namespace Place2Be
             {
                 await InitializeRecognizer(SpeechRecognizer.SystemSpeechLanguage);
 
-//                speechResourceMap = ResourceManager.Current.MainResourceMap.GetSubtree("LocalizationSpeechResources");
-
-                commands = new ObservableCollection<string>();
-                commands.Add("zoom in");
-                commands.Add("zoom out");
-                commands.Add("nearest restaurants");
-//                commands.Add("item one");
-//                commands.Add("item two");
-//                commands.Add("item three");
-//                commands.Add("item four");
-//                commands.Add("item five");
-//                commands.Add("item six");
-//                commands.Add("item one");
-//                commands.Add("item one");
-//                commands.Add("item one");
-//                commands.Add("item one");
-//                commands.Add("item one");
-//                commands.Add("item one");
-//                commands.Add("item one");
-//                commands.Add("item one");
-//                commands.Add("item one");
-//                commands.Add("item one");
-//                commands.Add("item one");
-//                commands.Add("item one");
-//                commands.Add("item one");
-//                commands.Add("item one");
                 ContinuousRecognize();
             }
             else
@@ -176,10 +156,6 @@ namespace Place2Be
                 rootPage.NotifyUser("Grammar Compilation Failed: " + result.Status.ToString(), NotifyType.ErrorMessage);
             }
 
-            // Set timeout timer to 1 day
-//            TimeSpan timeSpan = new TimeSpan(1, 0, 0, 0);
-//            speechRecognizer.ContinuousRecognitionSession.AutoStopSilenceTimeout.Add(timeSpan);
-//            speechRecognizer.Timeouts.InitialSilenceTimeout = timeSpan;
 
             speechRecognizer.ContinuousRecognitionSession.Completed += ContinuousRecognitionSession_Completed;
             speechRecognizer.ContinuousRecognitionSession.ResultGenerated +=
@@ -261,10 +237,6 @@ namespace Place2Be
                 string text = args.Result.Text.ToLower();
                 string knownCommand = "UNKNOWN COMMAND - ";
                 object o = listView1;
-//                foreach (String s in commands)
-//                {
-//                    if (text.Contains(s.ToLower()))
-//                    {
                 knownCommand = "";
                 var dp = CoreApplication.MainView.CoreWindow.Dispatcher;
                 if (text.Contains("zoom in"))
@@ -442,8 +414,52 @@ namespace Place2Be
                         OpenPopup(poi);
                     });
                 }
-//                    } 
-//                }
+                else if (text.Contains("drive"))
+                {
+                    await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+
+                        if (currentSelectedPOI != null)
+                        {
+                            currentDialog.Hide();
+                            showRoute(currentPosition, currentSelectedPOI.Location.Position, rootPage, true,
+                                destinationTextBox);
+
+                        }
+                        else
+                        {
+                            destinationTextBox.Text = "No Location Selected";
+                        }
+                    });
+                }
+                else if (text.Contains("walk"))
+                {
+                    await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+
+                        if (currentSelectedPOI != null)
+                        {
+
+                            currentDialog.Hide();
+                            showRoute(currentPosition, currentSelectedPOI.Location.Position, rootPage, false,
+                                destinationTextBox);
+
+                        }
+                        else
+                        {
+                            destinationTextBox.Text = "No Location Selected";
+                        }
+                    });
+                }
+                else if (text.Contains("cancel"))
+                {
+                    await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        currentDialog.Hide();
+                    });
+                }
+                //                    } 
+                //                }
                 dictatedTextBuilder.Append(knownCommand + args.Result.Text + "\n");
 
                 await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
@@ -513,29 +529,6 @@ namespace Place2Be
                     }
                 }
             }
-            //            else
-            //            {
-            //                isListening = false;
-            //
-            //                if (speechRecognizer.State != SpeechRecognizerState.Idle)
-            //                {
-            //                    // Cancelling recognition prevents any currently recognized speech from
-            //                    // generating a ResultGenerated event. StopAsync() will allow the final session to 
-            //                    // complete.
-            //                    try
-            //                    {
-            //                        await speechRecognizer.ContinuousRecognitionSession.StopAsync();
-            //
-            //                        // Ensure we don't leave any hypothesis text behind
-            //                        dictationTextBox.Text = dictatedTextBuilder.ToString();
-            //                    }
-            //                    catch (Exception exception)
-            //                    {
-            //                        var messageDialog = new Windows.UI.Popups.MessageDialog(exception.Message, "Exception");
-            //                        await messageDialog.ShowAsync();
-            //                    }
-            //                }
-            //            }
         }
 
         private void dictationTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -608,7 +601,7 @@ namespace Place2Be
             OpenPopup(poi);
         }
 
-        public static async void showRoute(BasicGeoposition start, BasicGeoposition end, MainPage mp, bool driving)
+        public static async void showRoute(BasicGeoposition start, BasicGeoposition end, MainPage mp, bool driving, TextBox textBox)
         {
             MapRouteFinderResult routeResult;
             if (driving)
@@ -633,7 +626,11 @@ namespace Place2Be
                 viewOfRoute.RouteColor = Colors.Yellow;
                 viewOfRoute.OutlineColor = Colors.Black;
 
-
+                textBox.Text = "Distance: " + viewOfRoute.Route.LengthInMeters + "m \n";
+                textBox.Text += "Travel Time: " + viewOfRoute.Route.EstimatedDuration.Minutes + "m " + viewOfRoute.Route.EstimatedDuration.Seconds + "s \n";
+                DateTime eta = DateTime.Now.Add(viewOfRoute.Route.EstimatedDuration);
+                textBox.Text += "ETA: " + eta.ToString("HH:mm:ss");
+               
                 // Add the new MapRouteView to the Routes collection
                 // of the MapControl.
 //                mp.MapC.Routes.Add(viewOfRoute);
@@ -671,10 +668,12 @@ namespace Place2Be
 
         private async Task<bool> OpenPopup(PointOfInterest poi)
         {
-            BasicGeoposition current = new BasicGeoposition();
-            current.Latitude = geoposition.Coordinate.Latitude;
-            current.Longitude = geoposition.Coordinate.Longitude;
-            LocationDialog ld = new LocationDialog(poi, current, this);
+            currentPosition= new BasicGeoposition();
+            currentPosition.Latitude = geoposition.Coordinate.Latitude;
+            currentPosition.Longitude = geoposition.Coordinate.Longitude;
+            currentSelectedPOI = poi;
+            LocationDialog ld = new LocationDialog(poi, currentPosition, this);
+            currentDialog = ld;
             ld.ShowAsync();
             return true;
         }

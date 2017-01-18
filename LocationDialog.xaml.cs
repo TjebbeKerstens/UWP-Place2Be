@@ -41,7 +41,7 @@ namespace Place2Be
             BasicGeoposition target = new BasicGeoposition();
             target.Latitude = poi.Location.Position.Latitude;
             target.Longitude = poi.Location.Position.Longitude;
-            MainPage.showRoute(current, target, mp, true);
+            MainPage.showRoute(current, target, mp, true, mp.destinationTB);
             Hide();
         }
 
@@ -50,7 +50,7 @@ namespace Place2Be
             BasicGeoposition target = new BasicGeoposition();
             target.Latitude = poi.Location.Position.Latitude;
             target.Longitude = poi.Location.Position.Longitude;
-            MainPage.showRoute(current, target, mp, false);
+            MainPage.showRoute(current, target, mp, false, mp.destinationTB);
             Hide();
         }
     }

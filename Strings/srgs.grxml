@@ -37,6 +37,7 @@
               <item>find near restourants</item>
               <item>show nearest restaurants</item>
               <item>show near restaurants</item>
+              <item>near places</item>
             </one-of>
             <tag>out="nearest restaurants";</tag>
           </item>
@@ -219,6 +220,30 @@
               <item>twentieth location</item>
             </one-of>
             <tag>out="20"</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>drive</item>
+              <item>drive to</item>
+              <item>drive there</item>
+            </one-of>
+            <tag>out="drive"</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>walk</item>
+              <item>walk to</item>
+              <item>walk there</item>
+            </one-of>
+            <tag>out="walk"</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>cancel</item>
+              <item>cancel please</item>
+              <item>please cancel</item>
+            </one-of>
+            <tag>out="cancel"</tag>
           </item>
         </one-of>
       </rule>
