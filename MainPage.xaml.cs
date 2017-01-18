@@ -53,11 +53,18 @@ namespace Place2Be
         private BasicGeoposition currentPosition;
         private ContentDialog currentDialog;
 
-        public TextBox destinationTB;
+//        public TextBox destinationT
+
+        public TextBox DestinationTextBox
+        {
+            get { return destinationTextBox; }
+            set { destinationTextBox = value; }
+        }
+
         public MediaElement musicElement;
         public MainPage()
         {
-            destinationTB = destinationTextBox;
+//            destinationTB = destinationTextBox;
             MapC = Map;
             this.InitializeComponent();
             isListening = false;
@@ -605,7 +612,7 @@ namespace Place2Be
             OpenPopup(poi);
         }
 
-        public static async void showRoute(BasicGeoposition start, BasicGeoposition end, MainPage mp, bool driving, TextBox textBox)
+        public static async void showRoute(BasicGeoposition start, BasicGeoposition end, MainPage mp, bool driving, TextBox textBox = null)
         {
             MapRouteFinderResult routeResult;
             if (driving)
@@ -629,7 +636,8 @@ namespace Place2Be
                 MapRouteView viewOfRoute = new MapRouteView(routeResult.Route);
                 viewOfRoute.RouteColor = Colors.Yellow;
                 viewOfRoute.OutlineColor = Colors.Black;
-
+                
+            
                 textBox.Text = "Distance: " + viewOfRoute.Route.LengthInMeters + "m \n";
                 textBox.Text += "Travel Time: " + viewOfRoute.Route.EstimatedDuration.Minutes + "m " + viewOfRoute.Route.EstimatedDuration.Seconds + "s \n";
                 DateTime eta = DateTime.Now.Add(viewOfRoute.Route.EstimatedDuration);
@@ -655,12 +663,6 @@ namespace Place2Be
         private void print(string s)
         {
             Debug.WriteLine("--DEBUG-- " + s);
-        }
-
-
-        private void TempButtonClick(object sender, RoutedEventArgs e)
-        {
-            RetrieveNearbyPlace("Restaurant");
         }
 
         private void ListView1_OnItemClick(object sender, ItemClickEventArgs e)
