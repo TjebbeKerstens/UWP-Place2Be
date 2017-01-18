@@ -118,7 +118,7 @@ namespace Place2Be
 
             // Zoom to current position
             await Map.TrySetViewAsync(current);
-            Map.TryZoomToAsync(16);
+            Map.TryZoomToAsync(14);
 
             // Create mapicon
             MapIcon mapIcon = new MapIcon();
@@ -311,6 +311,20 @@ namespace Place2Be
                     await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
                     {
                         RetrieveNearbyPlace("liquor_store");
+                    });
+                }
+                else if (text.Contains("near") && text.Contains("bar"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        RetrieveNearbyPlace("bar");
+                    });
+                }
+                else if (text.Contains("near") && text.Contains("atm"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        RetrieveNearbyPlace("atm");
                     });
                 }
                 else if (text.Contains("one") || text.Contains("first"))

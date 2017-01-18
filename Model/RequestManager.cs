@@ -33,12 +33,28 @@ namespace Place2Be.Model
       //  https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=51.4894830,5.1343090&radius=1000&sensor=true&types=restaurant&key=AIzaSyB40JmMGhRhBwqzOK-EvTVQ020TvSLPL_I
         public async Task<string> RetrieveNearbyPlace(Geoposition gp, string type)
         {
-           
+            string radius = "";
+
+            switch (type)
+            {
+                case "train_station":
+                    radius = "5000";
+                    break;
+                case "movie_theater":
+                    radius = "5000";
+                    break;
+                case "gym":
+                    radius = "5000";
+                    break;
+                default:
+                    radius = "1000";
+                    break;
+            }
             var cts = new CancellationTokenSource();
             cts.CancelAfter(5000);
             double latitude = gp.Coordinate.Latitude;
             double longitude = gp.Coordinate.Longitude;
-            string nearbyUrl = baseUrl + "nearbysearch/json?location=" + latitude + "," + longitude + "&radius=1000&sensor=true&types=" + type + "&key=" + api_key;
+            string nearbyUrl = baseUrl + "nearbysearch/json?location=" + latitude + "," + longitude + "&radius=" + radius + "&sensor=true&types=" + type + "&key=" + api_key;
 
             try
             {

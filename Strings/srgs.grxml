@@ -125,6 +125,30 @@
           </item>
           <item>
             <one-of>
+              <item>nearest bar</item>
+              <item>near bar</item>
+              <item>find the nearest bar</item>
+              <item>find near bar</item>
+              <item>show nearest bar</item>
+              <item>show near bar</item>
+              <item>near bar</item>
+            </one-of>
+            <tag>out="nearest bar";</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>nearest atm</item>
+              <item>near atm</item>
+              <item>find the nearest atm</item>
+              <item>find near atm</item>
+              <item>show nearest atm</item>
+              <item>show near atm</item>
+              <item>near atm</item>
+            </one-of>
+            <tag>out="nearest atm";</tag>
+          </item>
+          <item>
+            <one-of>
               <item>item one</item>
               <item>location one</item>
               <item>first item</item>
