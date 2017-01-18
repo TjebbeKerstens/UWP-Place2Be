@@ -115,14 +115,19 @@
   <ItemGroup>
     <Content Include="Assets\LocationPin.png" />
     <Content Include="Assets\MapPin.png" />
+    <Content Include="Assets\SplashScreen.scale-400.jpg" />
+    <Content Include="Assets\Square150x150Logo.scale-100.png" />
+    <Content Include="Assets\Square150x150Logo.scale-400.png" />
+    <Content Include="Assets\SplashScreen.scale-20.png" />
+    <Content Include="Assets\SplashScreen.scale-200.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
-    <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+    <Content Include="Strings\dest_unkown.wav" />
     <Content Include="Strings\srgs.grxml">
       <SubType>Designer</SubType>
     </Content>

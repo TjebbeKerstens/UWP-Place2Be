@@ -18,6 +18,7 @@ using Windows.ApplicationModel.Resources.Core;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Services.Maps;
+using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.Xaml.Controls.Maps;
@@ -53,6 +54,7 @@ namespace Place2Be
         private ContentDialog currentDialog;
 
         public TextBox destinationTB;
+        public MediaElement musicElement;
         public MainPage()
         {
             destinationTB = destinationTextBox;
@@ -428,7 +430,8 @@ namespace Place2Be
                         }
                         else
                         {
-                            destinationTextBox.Text = "No Location Selected";
+                            destinationTextBox.Text = "No Destination Selected";
+                            playMusic();
                         }
                     });
                 }
@@ -447,7 +450,8 @@ namespace Place2Be
                         }
                         else
                         {
-                            destinationTextBox.Text = "No Location Selected";
+                            destinationTextBox.Text = "No Destination Selected";
+                            playMusic();
                         }
                     });
                 }
@@ -676,6 +680,18 @@ namespace Place2Be
             currentDialog = ld;
             ld.ShowAsync();
             return true;
+        }
+
+        public async Task playMusic()
+        {
+            musicElement = new MediaElement();
+            musicElement.AudioCategory = Windows.UI.Xaml.Media.AudioCategory.Media;
+
+            StorageFolder Folder = Windows.ApplicationModel.Package.Current.InstalledLocation;
+            Folder = await Folder.GetFolderAsync("Strings");
+            StorageFile sf = await Folder.GetFileAsync("dest_unkown.wav");
+            musicElement.SetSource(await sf.OpenAsync(FileAccessMode.Read), sf.ContentType);
+            musicElement.Play();
         }
     }
 
