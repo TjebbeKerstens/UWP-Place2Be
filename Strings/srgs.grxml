@@ -40,6 +40,186 @@
             </one-of>
             <tag>out="nearest restaurants";</tag>
           </item>
+          <item>
+            <one-of>
+              <item>item one</item>
+              <item>location one</item>
+              <item>first item</item>
+              <item>first location</item>
+            </one-of>
+            <tag>out="item one"</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>item two</item>
+              <item>location two</item>
+              <item>second item</item>
+              <item>second location</item>
+            </one-of>
+            <tag>out="item two"</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>item three</item>
+              <item>location three</item>
+              <item>third item</item>
+              <item>third location</item>
+            </one-of>
+            <tag>out="item three"</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>item four</item>
+              <item>location four</item>
+              <item>fourth item</item>
+              <item>fourth location</item>
+            </one-of>
+            <tag>out=item four"</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>item five</item>
+              <item>location five</item>
+              <item>fifth item</item>
+              <item>fifth location</item>
+            </one-of>
+            <tag>out="item five"</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>item six</item>
+              <item>location six</item>
+              <item>sixth item</item>
+              <item>sixth location</item>
+            </one-of>
+            <tag>out="item 6"</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>item seven</item>
+              <item>location seven</item>
+              <item>seventh item</item>
+              <item>seventh location</item>
+            </one-of>
+            <tag>out="7"</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>item eight</item>
+              <item>location eight</item>
+              <item>eighth item</item>
+              <item>eighth location</item>
+            </one-of>
+            <tag>out="8"</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>item nine</item>
+              <item>location nine</item>
+              <item>ninth item</item>
+              <item>ninth location</item>
+            </one-of>
+            <tag>out="9"</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>item ten</item>
+              <item>location ten</item>
+              <item>tenth item</item>
+              <item>tenth location</item>
+            </one-of>
+            <tag>out="10"</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>item eleven</item>
+              <item>location eleven</item>
+              <item>eleventh item</item>
+              <item>eleventh location</item>
+            </one-of>
+            <tag>out="11"</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>item twelve</item>
+              <item>location twelve</item>
+              <item>twelfth item</item>
+              <item>twelfth location</item>
+            </one-of>
+            <tag>out="12"</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>item thirteen</item>
+              <item>location thirteen</item>
+              <item>thirteenth item</item>
+              <item>thirteenth location</item>
+            </one-of>
+            <tag>out="13"</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>item fourteen</item>
+              <item>location fourteen</item>
+              <item>fourteenth item</item>
+              <item>fourteenth location</item>
+            </one-of>
+            <tag>out="14"</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>item fifteen</item>
+              <item>location fifteen</item>
+              <item>fifteenth item</item>
+              <item>fifteenth location</item>
+            </one-of>
+            <tag>out="15"</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>item sixteen</item>
+              <item>location sixteen</item>
+              <item>sixteenth item</item>
+              <item>sixteenth location</item>
+            </one-of>
+            <tag>out="16"</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>item seventeen</item>
+              <item>location seventeen</item>
+              <item>seventeenth item</item>
+              <item>seventeenth location</item>
+            </one-of>
+            <tag>out="17"</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>item eighteen</item>
+              <item>location eigteen</item>
+              <item>eighteenth item</item>
+              <item>eighteenth location</item>
+            </one-of>
+            <tag>out="18"</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>item nineteen</item>
+              <item>location nineteen</item>
+              <item>nineteenth item</item>
+              <item>nineteenth location</item>
+            </one-of>
+            <tag>out="19"</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>item twenty</item>
+              <item>location twenty</item>
+              <item>twentieth item</item>
+              <item>twentieth location</item>
+            </one-of>
+            <tag>out="20"</tag>
+          </item>
         </one-of>
       </rule>
 </grammar>

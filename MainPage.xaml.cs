@@ -80,6 +80,26 @@ namespace Place2Be
                 commands.Add("zoom in");
                 commands.Add("zoom out");
                 commands.Add("nearest restaurants");
+//                commands.Add("item one");
+//                commands.Add("item two");
+//                commands.Add("item three");
+//                commands.Add("item four");
+//                commands.Add("item five");
+//                commands.Add("item six");
+//                commands.Add("item one");
+//                commands.Add("item one");
+//                commands.Add("item one");
+//                commands.Add("item one");
+//                commands.Add("item one");
+//                commands.Add("item one");
+//                commands.Add("item one");
+//                commands.Add("item one");
+//                commands.Add("item one");
+//                commands.Add("item one");
+//                commands.Add("item one");
+//                commands.Add("item one");
+//                commands.Add("item one");
+//                commands.Add("item one");
                 ContinuousRecognize();
             }
             else
@@ -233,15 +253,17 @@ namespace Place2Be
         private async void ContinuousRecognitionSession_ResultGenerated(SpeechContinuousRecognitionSession sender,
             SpeechContinuousRecognitionResultGeneratedEventArgs args)
         {
-            if (args.Result.Confidence == SpeechRecognitionConfidence.Medium ||
+            if (args.Result.Confidence == SpeechRecognitionConfidence.Low ||
+                args.Result.Confidence == SpeechRecognitionConfidence.Medium ||
                 args.Result.Confidence == SpeechRecognitionConfidence.High)
             {
                 string text = args.Result.Text.ToLower();
                 string knownCommand = "UNKNOWN COMMAND - ";
-                foreach (String s in commands)
-                {
-                    if (text.Contains(s.ToLower()))
-                    {
+                object o = listView1;
+//                foreach (String s in commands)
+//                {
+//                    if (text.Contains(s.ToLower()))
+//                    {
                         knownCommand = "";
                         if (text.Contains("zoom in"))
                         {
@@ -255,8 +277,89 @@ namespace Place2Be
                         {
                             RetrieveNearbyPlace("Restaurant");
                         }
-                    }
-                }
+                        else if (text.Contains("one") || text.Contains("first"))
+                        {
+                            PointOfInterest poi = (PointOfInterest) listView1.Items[0];
+                            OpenPopup(poi);
+                        }
+                        else if (text.Contains("two") || text.Contains("second"))
+                        {
+
+                        }
+                        else if (text.Contains("three") || text.Contains("third"))
+                        {
+
+                        }
+                        else if (text.Contains("four") || text.Contains("fourth"))
+                        {
+
+                        }
+                        else if (text.Contains("five") || text.Contains("fifth"))
+                        {
+
+                        }
+                        else if (text.Contains("six") || text.Contains("sixth"))
+                        {
+
+                        }
+                        else if (text.Contains("seven") || text.Contains("seventh"))
+                        {
+
+                        }
+                        else if (text.Contains("eight") || text.Contains("eitht"))
+                        {
+
+                        }
+                        else if (text.Contains("nine") || text.Contains("ninth"))
+                        {
+
+                        }
+                        else if (text.Contains("ten") || text.Contains("tenth"))
+                        {
+
+                        }
+                        else if (text.Contains("eleven") || text.Contains("eleventh"))
+                        {
+
+                        }
+                        else if (text.Contains("twelve") || text.Contains("twelfth"))
+                        {
+
+                        }
+                        else if (text.Contains("thirteen") || text.Contains("thirteenth"))
+                        {
+
+                        }
+                        else if (text.Contains("fourteen") || text.Contains("fourteenth"))
+                        {
+
+                        }
+                        else if (text.Contains("fifteen") || text.Contains("fifteenth"))
+                        {
+
+                        }
+                        else if (text.Contains("sixteen") || text.Contains("sixteenth"))
+                        {
+
+                        }
+                        else if (text.Contains("seventeen") || text.Contains("seventeenth"))
+                        {
+
+                        }
+                        else if (text.Contains("eighteen") || text.Contains("eighteenth"))
+                        {
+
+                        }
+                        else if (text.Contains("nineteen") || text.Contains("nineteenth"))
+                        {
+
+                        }
+                        else if (text.Contains("twenty") || text.Contains("twentieth"))
+                        {
+
+                        }
+//                    } 
+//                }
                 dictatedTextBuilder.Append(knownCommand + args.Result.Text + "\n");
 
                 await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
@@ -418,11 +521,7 @@ namespace Place2Be
             var buttonSender = sender as Image;
             PointOfInterest poi = buttonSender.DataContext as PointOfInterest;
             rootPage.NotifyUser("PointOfInterest clicked = " + poi.DisplayName, NotifyType.StatusMessage);
-            BasicGeoposition current = new BasicGeoposition();
-            current.Latitude = geoposition.Coordinate.Latitude;
-            current.Longitude = geoposition.Coordinate.Longitude;
-            LocationDialog ld = new LocationDialog(poi, current, this);
-            ld.ShowAsync();
+            OpenPopup(poi);
         }
 
         public static async void showRoute(BasicGeoposition start, BasicGeoposition end, MainPage mp, bool driving)
@@ -449,6 +548,7 @@ namespace Place2Be
                 MapRouteView viewOfRoute = new MapRouteView(routeResult.Route);
                 viewOfRoute.RouteColor = Colors.Yellow;
                 viewOfRoute.OutlineColor = Colors.Black;
+                
 
                 // Add the new MapRouteView to the Routes collection
                 // of the MapControl.
@@ -481,11 +581,18 @@ namespace Place2Be
         private void ListView1_OnItemClick(object sender, ItemClickEventArgs e)
         {
             PointOfInterest poi = (PointOfInterest) e.ClickedItem;
+            OpenPopup(poi);
+        }
+
+
+        private async Task<bool> OpenPopup(PointOfInterest poi)
+        {
             BasicGeoposition current = new BasicGeoposition();
             current.Latitude = geoposition.Coordinate.Latitude;
             current.Longitude = geoposition.Coordinate.Longitude;
             LocationDialog ld = new LocationDialog(poi, current, this);
             ld.ShowAsync();
+            return true;
         }
     }
 
