@@ -53,7 +53,6 @@ namespace Place2Be
         private BasicGeoposition currentPosition;
         private ContentDialog currentDialog;
 
-//        public TextBox destinationT
 
         public TextBox DestinationTextBox
         {
@@ -64,7 +63,7 @@ namespace Place2Be
         public MediaElement musicElement;
         public MainPage()
         {
-//            destinationTB = destinationTextBox;
+
             MapC = Map;
             this.InitializeComponent();
             isListening = false;
@@ -256,11 +255,62 @@ namespace Place2Be
                 {
                     Map.TryZoomOutAsync();
                 }
-                else if (text.Contains("near"))
+                else if (text.Contains("near") && text.Contains("restaurants"))
                 {
                     await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
                     {
-                        RetrieveNearbyPlace("Restaurant");
+                        RetrieveNearbyPlace("restaurant");
+                    });
+                }
+
+                else if (text.Contains("near") && text.Contains("cafe"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        RetrieveNearbyPlace("cafe");
+                    });
+                }
+                else if (text.Contains("near") && text.Contains("train"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        RetrieveNearbyPlace("train_station");
+                    });
+                }
+
+                else if (text.Contains("near") && text.Contains("bus"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        RetrieveNearbyPlace("bus_station");
+                    });
+                }
+                else if (text.Contains("near") && text.Contains("gas"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        RetrieveNearbyPlace("gas_station");
+                    });
+                }
+                else if (text.Contains("near") && text.Contains("movie"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        RetrieveNearbyPlace("movie_theater");
+                    });
+                }
+                else if (text.Contains("near") && text.Contains("gym"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        RetrieveNearbyPlace("gym");
+                    });
+                }
+                else if (text.Contains("near") && text.Contains("liquor"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        RetrieveNearbyPlace("liquor_store");
                     });
                 }
                 else if (text.Contains("one") || text.Contains("first"))
@@ -645,7 +695,7 @@ namespace Place2Be
                
                 // Add the new MapRouteView to the Routes collection
                 // of the MapControl.
-//                mp.MapC.Routes.Add(viewOfRoute);
+
                 if (mp.Map.Routes.Count > 0)
                 {
                     mp.Map.Routes.RemoveAt(0);

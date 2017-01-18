@@ -34,12 +34,94 @@
               <item>nearest restaurants</item>
               <item>near restaurants</item>
               <item>find the nearest restaurants</item>
-              <item>find near restourants</item>
+              <item>find near restaurants</item>
               <item>show nearest restaurants</item>
               <item>show near restaurants</item>
-              <item>near places</item>
             </one-of>
             <tag>out="nearest restaurants";</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>nearest cafes</item>
+              <item>near cafes</item>
+              <item>find the nearest cafes</item>
+              <item>find near cafes</item>
+              <item>show nearest cafes</item>
+              <item>show near cafes</item>         
+            </one-of>
+            <tag>out="nearest cafes";</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>nearest train station</item>
+              <item>near train station</item>
+              <item>find the nearest train station</item>
+              <item>find near train stations</item>
+              <item>show nearest train station</item>
+              <item>show near train stations</item>
+              <item>near train stations</item>
+            </one-of>
+            <tag>out="nearest train stations";</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>nearest bus station</item>
+              <item>near bus station</item>
+              <item>find the nearest bus station</item>
+              <item>find near bus stations</item>
+              <item>show nearest bus station</item>
+              <item>show near bus stations</item>
+              <item>near bus stations</item>
+            </one-of>
+            <tag>out="nearest bus stations";</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>nearest gas station</item>
+              <item>near gas station</item>
+              <item>find the nearest gas station</item>
+              <item>find near gas stations</item>
+              <item>show nearest gas station</item>
+              <item>show near gas stations</item>
+              <item>near gas stations</item>
+            </one-of>
+            <tag>out="nearest gas stations";</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>nearest movie theater</item>
+              <item>near movie theater</item>
+              <item>find the nearest movie theater</item>
+              <item>find near movie theaters</item>
+              <item>show nearest movie theaters</item>
+              <item>show near movie theaters</item>
+              <item>near movie theaters</item>
+            </one-of>
+            <tag>out="nearest movie theaters";</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>nearest gym</item>
+              <item>near gym</item>
+              <item>find the nearest gym</item>
+              <item>find near gyms</item>
+              <item>show nearest gym</item>
+              <item>show near gyms</item>
+              <item>near gyms</item>
+            </one-of>
+            <tag>out="nearest gyms";</tag>
+          </item>
+          <item>
+            <one-of>
+              <item>nearest liquor store</item>
+              <item>near liquor store</item>
+              <item>find the nearest liquor store</item>
+              <item>find near liquor store</item>
+              <item>show nearest liquor store</item>
+              <item>show near liquor store</item>
+              <item>near liquor store</item>
+            </one-of>
+            <tag>out="nearest liquor store";</tag>
           </item>
           <item>
             <one-of>
