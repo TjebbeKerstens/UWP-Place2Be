@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Media;
 using Windows.Globalization;
 using Windows.UI.Xaml.Documents;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.Resources.Core;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
@@ -264,100 +265,183 @@ namespace Place2Be
 //                {
 //                    if (text.Contains(s.ToLower()))
 //                    {
-                        knownCommand = "";
-                        if (text.Contains("zoom in"))
-                        {
-                            Map.TryZoomInAsync();
-                        }
-                        else if (text.Contains("zoom out"))
-                        {
-                            Map.TryZoomOutAsync();
-                        }
-                        else if (text.Contains("nearest restaurants"))
-                        {
-                            RetrieveNearbyPlace("Restaurant");
-                        }
-                        else if (text.Contains("one") || text.Contains("first"))
-                        {
-                            PointOfInterest poi = (PointOfInterest) listView1.Items[0];
-                            OpenPopup(poi);
-                        }
-                        else if (text.Contains("two") || text.Contains("second"))
-                        {
-
-                        }
-                        else if (text.Contains("three") || text.Contains("third"))
-                        {
-
-                        }
-                        else if (text.Contains("four") || text.Contains("fourth"))
-                        {
-
-                        }
-                        else if (text.Contains("five") || text.Contains("fifth"))
-                        {
-
-                        }
-                        else if (text.Contains("six") || text.Contains("sixth"))
-                        {
-
-                        }
-                        else if (text.Contains("seven") || text.Contains("seventh"))
-                        {
-
-                        }
-                        else if (text.Contains("eight") || text.Contains("eitht"))
-                        {
-
-                        }
-                        else if (text.Contains("nine") || text.Contains("ninth"))
-                        {
-
-                        }
-                        else if (text.Contains("ten") || text.Contains("tenth"))
-                        {
-
-                        }
-                        else if (text.Contains("eleven") || text.Contains("eleventh"))
-                        {
-
-                        }
-                        else if (text.Contains("twelve") || text.Contains("twelfth"))
-                        {
-
-                        }
-                        else if (text.Contains("thirteen") || text.Contains("thirteenth"))
-                        {
-
-                        }
-                        else if (text.Contains("fourteen") || text.Contains("fourteenth"))
-                        {
-
-                        }
-                        else if (text.Contains("fifteen") || text.Contains("fifteenth"))
-                        {
-
-                        }
-                        else if (text.Contains("sixteen") || text.Contains("sixteenth"))
-                        {
-
-                        }
-                        else if (text.Contains("seventeen") || text.Contains("seventeenth"))
-                        {
-
-                        }
-                        else if (text.Contains("eighteen") || text.Contains("eighteenth"))
-                        {
-
-                        }
-                        else if (text.Contains("nineteen") || text.Contains("nineteenth"))
-                        {
-
-                        }
-                        else if (text.Contains("twenty") || text.Contains("twentieth"))
-                        {
-
-                        }
+                knownCommand = "";
+                var dp = CoreApplication.MainView.CoreWindow.Dispatcher;
+                if (text.Contains("zoom in"))
+                {
+                    Map.TryZoomInAsync();
+                }
+                else if (text.Contains("zoom out"))
+                {
+                    Map.TryZoomOutAsync();
+                }
+                else if (text.Contains("near"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        RetrieveNearbyPlace("Restaurant");
+                    });
+                }
+                else if (text.Contains("one") || text.Contains("first"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        PointOfInterest poi = (PointOfInterest) listView1.Items[0];
+                        OpenPopup(poi);
+                    });
+                }
+                else if (text.Contains("two") || text.Contains("second"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        PointOfInterest poi = (PointOfInterest) listView1.Items[1];
+                        OpenPopup(poi);
+                    });
+                }
+                else if (text.Contains("three") || text.Contains("third"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        PointOfInterest poi = (PointOfInterest) listView1.Items[2];
+                        OpenPopup(poi);
+                    });
+                }
+                else if (text.Contains("four") || text.Contains("fourth"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        PointOfInterest poi = (PointOfInterest) listView1.Items[3];
+                        OpenPopup(poi);
+                    });
+                }
+                else if (text.Contains("five") || text.Contains("fifth"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        PointOfInterest poi = (PointOfInterest) listView1.Items[4];
+                        OpenPopup(poi);
+                    });
+                }
+                else if (text.Contains("six") || text.Contains("sixth"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        PointOfInterest poi = (PointOfInterest) listView1.Items[5];
+                        OpenPopup(poi);
+                    });
+                }
+                else if (text.Contains("seven") || text.Contains("seventh"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        PointOfInterest poi = (PointOfInterest) listView1.Items[6];
+                        OpenPopup(poi);
+                    });
+                }
+                else if (text.Contains("eight") || text.Contains("eitht"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        PointOfInterest poi = (PointOfInterest) listView1.Items[7];
+                        OpenPopup(poi);
+                    });
+                }
+                else if (text.Contains("nine") || text.Contains("ninth"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        PointOfInterest poi = (PointOfInterest) listView1.Items[8];
+                        OpenPopup(poi);
+                    });
+                }
+                else if (text.Contains("ten") || text.Contains("tenth"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        PointOfInterest poi = (PointOfInterest) listView1.Items[9];
+                        OpenPopup(poi);
+                    });
+                }
+                else if (text.Contains("eleven") || text.Contains("eleventh"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        PointOfInterest poi = (PointOfInterest) listView1.Items[10];
+                        OpenPopup(poi);
+                    });
+                }
+                else if (text.Contains("twelve") || text.Contains("twelfth"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        PointOfInterest poi = (PointOfInterest) listView1.Items[11];
+                        OpenPopup(poi);
+                    });
+                }
+                else if (text.Contains("thirteen") || text.Contains("thirteenth"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        PointOfInterest poi = (PointOfInterest) listView1.Items[12];
+                        OpenPopup(poi);
+                    });
+                }
+                else if (text.Contains("fourteen") || text.Contains("fourteenth"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        PointOfInterest poi = (PointOfInterest) listView1.Items[13];
+                        OpenPopup(poi);
+                    });
+                }
+                else if (text.Contains("fifteen") || text.Contains("fifteenth"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        PointOfInterest poi = (PointOfInterest) listView1.Items[14];
+                        OpenPopup(poi);
+                    });
+                }
+                else if (text.Contains("sixteen") || text.Contains("sixteenth"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        PointOfInterest poi = (PointOfInterest) listView1.Items[15];
+                        OpenPopup(poi);
+                    });
+                }
+                else if (text.Contains("seventeen") || text.Contains("seventeenth"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        PointOfInterest poi = (PointOfInterest) listView1.Items[16];
+                        OpenPopup(poi);
+                    });
+                }
+                else if (text.Contains("eighteen") || text.Contains("eighteenth"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        PointOfInterest poi = (PointOfInterest) listView1.Items[17];
+                        OpenPopup(poi);
+                    });
+                }
+                else if (text.Contains("nineteen") || text.Contains("nineteenth"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        PointOfInterest poi = (PointOfInterest) listView1.Items[18];
+                        OpenPopup(poi);
+                    });
+                }
+                else if (text.Contains("twenty") || text.Contains("twentieth"))
+                {
+                    await dp.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        PointOfInterest poi = (PointOfInterest) listView1.Items[19];
+                        OpenPopup(poi);
+                    });
+                }
 //                    } 
 //                }
                 dictatedTextBuilder.Append(knownCommand + args.Result.Text + "\n");
@@ -548,7 +632,7 @@ namespace Place2Be
                 MapRouteView viewOfRoute = new MapRouteView(routeResult.Route);
                 viewOfRoute.RouteColor = Colors.Yellow;
                 viewOfRoute.OutlineColor = Colors.Black;
-                
+
 
                 // Add the new MapRouteView to the Routes collection
                 // of the MapControl.
